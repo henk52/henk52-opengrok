@@ -37,9 +37,13 @@
 #
 # opengrok-0.12.1_bin.tar.gz
 class opengrok (
-  $szOpenGrokName = hiera( 'OpenGrokName', 'opengrok-0.12.1' )
+  $szOpenGrokName = hiera( 'OpenGrokName', 'opengrok-0.12.1' ),
+  $szFileStoragePath = hiera( 'FileStoragePath', '/vagrant/files' )
 )
 {
+
+$szBaseOpenGrokPath = "/var/opengrok"
+$szOpenGrokUser = "tomcat"
 
 
 package { 'tomcat':
@@ -53,30 +57,37 @@ service { 'tomcat':
 }
 
 
-$szBaseOpenGrokPath = "/var/opengrok"
-$szOpenGrokUser = "tomcat"
-
 file { "$szBaseOpenGrokPath":
   ensure => directory,
   owner  => "$szOpenGrokUser",
+  require => Package [ 'tomcat' ],
 }
 
 file { "$szBaseOpenGrokPath/data":
   ensure => directory,
   owner  => "$szOpenGrokUser",
-  require => File [ "$szBaseOpenGrokPath" ],
+  require => [
+               File [ "$szBaseOpenGrokPath" ],
+               Package [ 'tomcat' ],
+             ],
 }
 
 file { "$szBaseOpenGrokPath/src":
   ensure => directory,
   owner  => "$szOpenGrokUser",
-  require => File [ "$szBaseOpenGrokPath" ],
+  require => [
+               File [ "$szBaseOpenGrokPath" ],
+               Package [ 'tomcat' ],
+             ],
 }
 
 file { "$szBaseOpenGrokPath/etc":
   ensure => directory,
   owner  => "$szOpenGrokUser",
-  require => File [ "$szBaseOpenGrokPath" ],
+  require => [
+               File [ "$szBaseOpenGrokPath" ],
+               Package [ 'tomcat' ],
+             ],
 }
 
 package { 'ctags-etags':
@@ -86,7 +97,7 @@ package { 'ctags-etags':
 # See: http://opengrok.github.io/OpenGrok/
 exec { 'install_opengrok':
   creates  => "/opt/$szOpenGrokName",
-  command => "cd /opt; tar -zxf /vagrant/$szOpenGrokName-bin.tar.gz",
+  command => "cd /opt; tar -zxf $szFileStoragePath/$szOpenGrokName-bin.tar.gz",
   path    => [ '/bin/' ],
 }
 
