@@ -44,7 +44,7 @@ class opengrok (
 
 $szBaseOpenGrokPath = "/var/opengrok"
 $szOpenGrokUser = "tomcat"
-
+$szVagrantUser = 'vagrant'
 
 package { 'tomcat':
   ensure => present,
@@ -65,7 +65,9 @@ file { "$szBaseOpenGrokPath":
 
 file { "$szBaseOpenGrokPath/data":
   ensure => directory,
-  owner  => "$szOpenGrokUser",
+  owner  => "$szVagrantUser",
+  group  => "$szOpenGrokUser",
+  recurse => true,
   require => [
                File [ "$szBaseOpenGrokPath" ],
                Package [ 'tomcat' ],
@@ -74,7 +76,9 @@ file { "$szBaseOpenGrokPath/data":
 
 file { "$szBaseOpenGrokPath/src":
   ensure => directory,
-  owner  => "$szOpenGrokUser",
+  owner  => "$szVagrantUser",
+  group  => "$szOpenGrokUser",
+  recurse => true,
   require => [
                File [ "$szBaseOpenGrokPath" ],
                Package [ 'tomcat' ],
@@ -83,11 +87,20 @@ file { "$szBaseOpenGrokPath/src":
 
 file { "$szBaseOpenGrokPath/etc":
   ensure => directory,
-  owner  => "$szOpenGrokUser",
+  owner  => "$szVagrantUser",
+  group  => "$szOpenGrokUser",
+  recurse => true,
   require => [
                File [ "$szBaseOpenGrokPath" ],
                Package [ 'tomcat' ],
              ],
+}
+
+file { "$szBaseOpenGrokPath/log":
+  ensure => directory,
+  owner  => "$szVagrantUser",
+  recurse => true,
+  require => File [ "$szBaseOpenGrokPath" ],
 }
 
 package { 'ctags-etags':

@@ -1,0 +1,7 @@
+Firgure out how I can ensre this dependency is resolved correctly:
+
+Warning: Could not retrieve fact fqdn
+Error: Could not find command '/opt/opengrok/bin/OpenGrok'
+Error: /Stage[main]/Opengrok/Exec[deploy_opengrok]/returns: change from notrun to 0 failed: Could not find command '/opt/opengrok/bin/OpenGrok'
+Warning: /Stage[main]/Opengrok/Exec[deploy_configure]: Skipping because of failed dependencies
+
