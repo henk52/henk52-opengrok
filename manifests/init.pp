@@ -133,7 +133,7 @@ exec { 'deploy_opengrok':
   path    => [ '/bin/' ],
   require => [
                File [ '/var/lib/tomcat7', "$szBaseOpenGrokPath/src" ],
-               Exec [ 'install_opengrok' ],
+               File [ '/opt/opengrok' ],
              ],
 }
 
@@ -144,7 +144,7 @@ exec { 'deploy_configure':
   path    => [ '/bin/' ],
   require => [ 
                File [ "$szBaseOpenGrokPath/etc", "$szBaseOpenGrokPath/data" ],
-               Exec [ 'deploy_opengrok' ],
+               File [ '/opt/opengrok' ],
              ],
 }
 }
