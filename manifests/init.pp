@@ -147,4 +147,14 @@ exec { 'deploy_configure':
                File [ '/opt/opengrok' ],
              ],
 }
+
+file { '/var/opengrok/etc/configuration.xml':
+  owner   => "$szVagrantUser",
+  group   => "$szOpenGrokUser",
+  require => [
+               Exec [ 'deploy_configure' ],
+               Package [ 'tomcat' ],
+             ],
+}
+
 }
