@@ -157,4 +157,13 @@ file { '/var/opengrok/etc/configuration.xml':
              ],
 }
 
+file { '/var/opengrok/data':
+  owner   => "$szVagrantUser",
+  group   => "$szOpenGrokUser",
+  require => [
+               Exec [ 'deploy_configure' ],
+               Package [ 'tomcat' ],
+             ],
+}
+
 }
